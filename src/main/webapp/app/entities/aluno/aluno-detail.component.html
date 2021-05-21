@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="aluno">
+            <h2><span jhiTranslate="alunoWebApp.aluno.detail.title">Aluno</span> {{ aluno.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="alunoWebApp.aluno.nome">Nome</span></dt>
+                <dd>
+                    <span>{{ aluno.nome }}</span>
+                </dd>
+                <dt><span jhiTranslate="alunoWebApp.aluno.email">Email</span></dt>
+                <dd>
+                    <span>{{ aluno.email }}</span>
+                </dd>
+                <dt><span jhiTranslate="alunoWebApp.aluno.dataNascimento">Data Nascimento</span></dt>
+                <dd>
+                    <span>{{ aluno.dataNascimento }}</span>
+                </dd>
+                <dt><span jhiTranslate="alunoWebApp.aluno.rm">Rm</span></dt>
+                <dd>
+                    <span>{{ aluno.rm }}</span>
+                </dd>
+                <dt><span jhiTranslate="alunoWebApp.aluno.foto">Foto</span></dt>
+                <dd>
+                    <div *ngIf="aluno.foto">
+                        <a (click)="openFile(aluno.fotoContentType, aluno.foto)">
+                            <img [src]="'data:' + aluno.fotoContentType + ';base64,' + aluno.foto" style="max-width: 100%;" alt="aluno image"/>
+                        </a>
+                        {{ aluno.fotoContentType }}, {{ byteSize(aluno.foto) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="alunoWebApp.aluno.status">Status</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'alunoWebApp.Status.' + aluno.status }}">{{ aluno.status }}</span>
+                </dd>
+                <dt><span jhiTranslate="alunoWebApp.aluno.turma">Turma</span></dt>
+                <dd>
+                    <span *ngFor="let turma of aluno.turmas; let last = last">
+                        <a [routerLink]="['/turma', turma?.id, 'view']">{{ turma.codigoTurma }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/aluno', aluno.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

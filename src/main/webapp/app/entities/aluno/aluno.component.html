@@ -1,0 +1,76 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="alunoWebApp.aluno.home.title">Alunos</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-aluno" [routerLink]="['/aluno/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="alunoWebApp.aluno.home.createLabel">
+            Create a new Aluno
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="alunos?.length === 0">
+        <span jhiTranslate="alunoWebApp.aluno.home.notFound">No alunos found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="alunos && alunos.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="nome"><span jhiTranslate="alunoWebApp.aluno.nome">Nome</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="email"><span jhiTranslate="alunoWebApp.aluno.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="dataNascimento"><span jhiTranslate="alunoWebApp.aluno.dataNascimento">Data Nascimento</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="rm"><span jhiTranslate="alunoWebApp.aluno.rm">Rm</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="foto"><span jhiTranslate="alunoWebApp.aluno.foto">Foto</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="status"><span jhiTranslate="alunoWebApp.aluno.status">Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let aluno of alunos ;trackBy: trackId">
+                    <td><a [routerLink]="['/aluno', aluno.id, 'view']">{{ aluno.id }}</a></td>
+                    <td>{{ aluno.nome }}</td>
+                    <td>{{ aluno.email }}</td>
+                    <td>{{ aluno.dataNascimento | date:'mediumDate' }}</td>
+                    <td>{{ aluno.rm }}</td>
+                    <td>
+                        <a *ngIf="aluno.foto" (click)="openFile(aluno.fotoContentType, aluno.foto)">
+                            <img [src]="'data:' + aluno.fotoContentType + ';base64,' + aluno.foto" style="max-height: 30px;" alt="aluno image"/>
+                        </a>
+                        <span *ngIf="aluno.foto">{{ aluno.fotoContentType }}, {{ byteSize(aluno.foto) }}</span>
+                    </td>
+                    <td jhiTranslate="{{ 'alunoWebApp.Status.' + aluno.status }}">{{ aluno.status }}</td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/aluno', aluno.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/aluno', aluno.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(aluno)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

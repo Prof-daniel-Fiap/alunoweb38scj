@@ -26,7 +26,7 @@ enum TipoCurso{
 
 entity Turma{
 	codigoTurma String,
-    dataCriacao Localdate,
+    dataCriacao LocalDate,
     unidade String,
     observacoes TextBlob
 }

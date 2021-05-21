@@ -1,0 +1,11 @@
+{
+  "alunoWebApp": {
+    "Status": {
+      "null": "",
+      "PREATIVO": "PREATIVO",
+      "ATIVO": "ATIVO",
+      "SUSPENSO": "SUSPENSO",
+      "CONCLUIDO": "CONCLUIDO"
+    }
+  }
+}
